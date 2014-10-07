@@ -50,9 +50,7 @@ exports.update = function(req, res) {
     if (!collection) {
       return res.send(404); 
     }
-    console.log(collection, req.body);
     var updated = _.merge(collection, req.body);
-    console.log(updated);
     updated.save(function (err) {
       if (err) {
         return handleError(res, err); 
