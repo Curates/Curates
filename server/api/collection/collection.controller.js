@@ -84,10 +84,9 @@ exports.collections = function(req, res, next) {
 
   Collection.find({user: userId}, function (err, collections) {
     if (err) {
-      return res.send(500, err);
-    } else {
-      res.json(200, collections);
+      return handleError(res, err);
     }
+    res.json(200, collections);
   });
 
 };
