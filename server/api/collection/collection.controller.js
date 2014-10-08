@@ -29,7 +29,6 @@ exports.show = function(req, res) {
 // Creates a new collection in the DB.
 exports.create = function(req, res) {
   Collection.create(req.body, function(err, collection) {
-    console.log(req.body);
     if (err) {
       return handleError(res, err);
     }
@@ -79,17 +78,15 @@ exports.destroy = function(req, res) {
 };
 
 // Fetch a users collections
-exports.collections = function(req, res, next) {
+exports.userCollections = function(req, res, next) {
   var userId = req.params.id;
 
   Collection.find({user: userId}, function (err, collections) {
     if (err) {
-      return res.send(500, err);
-    } else {
-      res.json(200, collections);
+      return handleError(res, err);
     }
+    res.json(200, collections);
   });
-
 };
 
 function handleError(res, err) {
