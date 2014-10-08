@@ -41,7 +41,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   // Ensure the database id is not overwritten
   if (req.body._id) {
-    delete req.body._id; 
+    delete req.body._id;
   }
   Collection.findById(req.params.id, function (err, collection) {
     if (err) {
@@ -76,6 +76,20 @@ exports.destroy = function(req, res) {
       return res.send(204);
     });
   });
+};
+
+// Fetch a users collections
+exports.collections = function(req, res, next) {
+  var userId = req.params.id;
+
+  Collection.find({user: userId}, function (err, collections) {
+    if (err) {
+      return res.send(500, err);
+    } else {
+      res.json(200, collections);
+    }
+  });
+
 };
 
 function handleError(res, err) {
