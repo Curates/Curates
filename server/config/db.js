@@ -1,3 +1,5 @@
+'use strict';
+
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -14,9 +16,11 @@ knex.schema.hasTable('users').then(function(exists) {
       t.increments('id').primary();
       t.string('first_name', 100);
       t.string('last_name', 100);
+      t.string('role', 10).defaultTo('user');
       t.string('email', 100).unique();
-      t.string('password', 100);
-      t.text('salt');
+    })
+    .then(function() {
+      console.log('created users table.');
     });
   }
 });
@@ -25,9 +29,11 @@ knex.schema.hasTable('collections').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('collections', function(t) {
       t.increments('id').primary();
-      t.string('first_name', 100);
-      t.string('last_name', 100);
-      t.string('email', 100).unique();
+      t.string('title', 100);
+      t.text('description');
+    })
+    .then(function() {
+      console.log('created collections table.');
     });
   }
 });
@@ -35,9 +41,16 @@ knex.schema.hasTable('links').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('links', function(t) {
       t.increments('id').primary();
+      t.integer('collection_id')
+        .unsigned()
+        .references('id')
+        .inTable('collections');
       t.string('title', 100);
       t.text('description');
       t.string('url', 255);
+    })
+    .then(function() {
+      console.log('created links table.');
     });
   }
 });knex.schema.hasTable('user_collections').then(function(exists) {
@@ -51,6 +64,9 @@ knex.schema.hasTable('links').then(function(exists) {
         .unsigned()
         .references('id')
         .inTable('collections');
+    })
+    .then(function() {
+      console.log('created user_collections table.');
     });
   }
 });knex.schema.hasTable('user_favorites').then(function(exists) {
@@ -64,6 +80,9 @@ knex.schema.hasTable('links').then(function(exists) {
         .unsigned()
         .references('id')
         .inTable('collections');
+    })
+    .then(function() {
+      console.log('created user_favorites table.');
     });
   }
 });knex.schema.hasTable('user_votes').then(function(exists) {
@@ -77,6 +96,9 @@ knex.schema.hasTable('links').then(function(exists) {
         .unsigned()
         .references('id')
         .inTable('collections');
+    })
+    .then(function() {
+      console.log('created user_votes table.');
     });
   }
 });

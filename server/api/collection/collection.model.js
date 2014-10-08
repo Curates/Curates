@@ -22,3 +22,15 @@ var CollectionSchema = new Schema({
 });
 
 module.exports = mongoose.model('Collection', CollectionSchema);
+
+
+var knex = require('../../config/db');
+var bookshelf = require('bookshelf')(knex);
+var Link = require('./link.model');
+
+var Collection = bookshelf.Model.extend({
+  table: 'collections',
+  links: function() {
+    return this.hasMany(Link);
+  }
+});

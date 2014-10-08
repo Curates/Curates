@@ -148,3 +148,18 @@ UserSchema.methods = {
 };
 
 module.exports = mongoose.model('User', UserSchema);
+
+
+var knex = require('../../config/db');
+var bookshelf = require('bookshelf')(knex);
+
+var User = bookshelf.Model.extend({
+  table: 'users',
+
+  initialize: function() {
+    this.on('save', function() {
+      // Email?
+    });
+  },
+  
+});
