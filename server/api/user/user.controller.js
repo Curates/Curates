@@ -53,7 +53,9 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
-    if(err) return res.send(500, err);
+    if(err) {
+      return res.send(500, err)
+    }
     return res.send(204);
   });
 };
