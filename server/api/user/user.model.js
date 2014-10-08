@@ -154,25 +154,35 @@ var knex = require('../../config/db');
 var bookshelf = require('bookshelf')(knex);
 bookshelf.plugin('virtuals');
 var Collection = require('../collection/collection.model');
-var Favorite = require('../collection/favorite.model');
-var Vote = require('../collection/vote.model');
+var Favorite = require('../favorite/favorite.model');
+var Vote = require('../vote/vote.model');
 
 var User = bookshelf.Model.extend({
   
   table: 'users',
 
   initialize: function() {
-    this.on('saving', function(model, attrs, options) {
 
-      if (validatePresenceOf(this.get('password')) && authTypes.indexOf(this.get('provider')) === -1) {
-        this.set('salt', this.makeSalt());
-        this.set('password', this.encryptPassword(this.get('password')));
+    // Check for password changes and rehash
+    this.on('updating', function(model, attributes, options) {
+      if (attributes.password.hasChanged()) {
+        model.password = this.encryptPassword(model.password);
       }
-
     });
 
-    this.on('created', function() {
-      // Email?
+    // Salt and hash password upon creation
+    this.on('creating', function(model, attributes, options) {
+      if (validatePresenceOf(model.password) && authTypes.indexOf(model.provider) === -1) {
+        if (!model.salt) {
+          model.salt = model.makeSalt();
+          model.password = model.encryptPassword(model.password);
+        }
+      }
+    });
+
+    // Potentially send registration email
+    this.on('created', function(model, attributes, options) {
+      // Email send?
     });
   },
 
@@ -185,10 +195,11 @@ var User = bookshelf.Model.extend({
       };
     },
 
+    // Auth token
     token: function() {
       return {
-        '_id': this._id,
-        'role': this.role
+        '_id': this.get('id'),
+        'role': this.get('role')
       };
     }
   },

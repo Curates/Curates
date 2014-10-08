@@ -2,10 +2,10 @@
 
 var knex = require('../../config/db');
 var bookshelf = require('bookshelf')(knex);
-var Collection = require('./collection.model');
+var Collection = require('../collection/collection.model');
 
 var Link = bookshelf.Model.extend({
-  table: 'collections',
+  table: 'links',
   collection: function() {
     return this.belongs(Collection);
   }

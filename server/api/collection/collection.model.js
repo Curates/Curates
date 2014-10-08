@@ -26,12 +26,17 @@ module.exports = mongoose.model('Collection', CollectionSchema);
 
 var knex = require('../../config/db');
 var bookshelf = require('bookshelf')(knex);
+var User = require('../user/user.model');
 var Link = require('./link.model');
-var Favorite = require('./favorite.model');
-var Vote = require('./vote.model');
+var Favorite = require('../favorite/favorite.model');
+var Vote = require('../vote/vote.model');
 
 var Collection = bookshelf.Model.extend({
   table: 'collections',
+
+  user: function() {
+    return this.belongsTo(User);
+  },
 
   favorites: function() {
     return this.hasMany(Favorite);

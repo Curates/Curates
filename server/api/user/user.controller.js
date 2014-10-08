@@ -71,7 +71,7 @@ exports.show = function (req, res, next) {
   //   .fetch({withRelated: ['collections', 'favorites']})
   //   .then(function(user) {
   //     return res.json({
-  //       user: user,
+  //       user: user.profile,
   //       collections: user.related('collections').toJSON(),
   //       favorites: user.related('favorites').toJSON()
   //     });
@@ -81,10 +81,8 @@ exports.show = function (req, res, next) {
   //   })
 };
 
-/**
- * Deletes a user
- * restriction: 'admin'
- */
+// Delete a user
+// restriction: 'admin'
 exports.destroy = function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if (err) {
@@ -93,27 +91,26 @@ exports.destroy = function(req, res) {
     return res.send(204);
   });
 
-  new User({id: req.param.id})
-    .fetch({withRelated: ['favorites', 'collections', 'links']})
-    .then(function(user) {
-      user.related('favorites').invokeThen('destroy');
-      user.related('collections').invokeThen('destroy');
-      user.related('links').invokeThen('destroy')
-        .then(function () {
-          return user.destroy()
-            .then(function () {
-              return res.send(204);
-            });
-        })
-        .catch(function(err) {
-          return validationError(res, err);
-        });
-    });
+  // new User({id: req.param.id})
+  //   .fetch({withRelated: ['favorites', 'collections', 'links']})
+  //   .then(function(user) {
+  //     user.related('favorites').invokeThen('destroy');
+  //     user.related('collections').invokeThen('destroy');
+  //     user.related('links').invokeThen('destroy')
+  //       .then(function () {
+  //         return user.destroy()
+  //           .then(function () {
+  //             return res.send(204);
+  //           });
+  //       })
+  //       .catch(function(err) {
+  //         return validationError(res, err);
+  //       });
+  //   });
 };
 
-/**
- * Change a users password
- */
+
+// Change a user's password
 exports.changePassword = function(req, res, next) {
   var userId = req.user._id;
   var oldPass = String(req.body.oldPassword);
@@ -132,11 +129,29 @@ exports.changePassword = function(req, res, next) {
       res.send(403);
     }
   });
+
+  // new User({id: req.user.id})
+  //   .fetch()
+  //   .then(function(user) {
+  //     if (user.authenticate(req.body.oldPassword)) {
+  //       user.password = newPass;
+  //       user.save()
+  //         .then(function() {
+  //           return res.send(200);
+  //         })
+  //         .catch(function(err) {
+  //           return validationError(res, err);
+  //         })
+  //     } else {
+  //       return res.send(403);
+  //     }
+  //   })
+  //   .catch(function(err) {
+  //     return validationError(res, err);
+  //   });
 };
 
-/**
- * Get my info
- */
+// Get my info
 exports.me = function(req, res, next) {
   var userId = req.user._id;
   User.findOne({
@@ -150,11 +165,22 @@ exports.me = function(req, res, next) {
     }
     res.json(user);
   });
+
+  // new User({id: req.params.id})
+  //   .fetch({withRelated: ['collections', 'favorites']})
+  //   .then(function(user) {
+  //     return res.json({
+  //       user: user.omit('salt', 'password'),
+  //       collections: user.related('collections').toJSON(),
+  //       favorites: user.related('favorites').toJSON()
+  //     });
+  //   })
+  //   .catch(function(err) {
+  //     validationError(res, err);
+  //   })
 };
 
-/**
- * Authentication callback
- */
+// Authentication callback
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };

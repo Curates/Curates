@@ -36,12 +36,18 @@ knex.schema.hasTable('collections').then(function(exists) {
       t.string('title', 100);
       t.text('description');
       t.integer('votes').defaultTo(0);
+      t.integer('following').defaultTo(0);
+      t.integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users');
     })
     .then(function() {
       console.log('created collections table.');
     });
   }
 });
+
 knex.schema.hasTable('links').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('links', function(t) {
@@ -58,23 +64,9 @@ knex.schema.hasTable('links').then(function(exists) {
       console.log('created links table.');
     });
   }
-});knex.schema.hasTable('user_collections').then(function(exists) {
-  if (!exists) {
-    return knex.schema.createTable('user_collections', function(t) {
-      t.integer('user_id')
-        .unsigned()
-        .references('id')
-        .inTable('users');
-      t.integer('collection_id')
-        .unsigned()
-        .references('id')
-        .inTable('collections');
-    })
-    .then(function() {
-      console.log('created user_collections table.');
-    });
-  }
-});knex.schema.hasTable('user_favorites').then(function(exists) {
+});
+
+knex.schema.hasTable('user_favorites').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('user_favorites', function(t) {
       t.integer('user_id')
@@ -90,7 +82,9 @@ knex.schema.hasTable('links').then(function(exists) {
       console.log('created user_favorites table.');
     });
   }
-});knex.schema.hasTable('user_votes').then(function(exists) {
+});
+
+knex.schema.hasTable('user_votes').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('user_votes', function(t) {
       t.integer('user_id')
