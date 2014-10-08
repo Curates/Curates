@@ -14,10 +14,14 @@ knex.schema.hasTable('users').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('users', function(t) {
       t.increments('id').primary();
-      t.string('first_name', 100);
-      t.string('last_name', 100);
-      t.string('role', 10).defaultTo('user');
-      t.string('email', 100).unique();
+      t.string('first_name', 100).notNullable();
+      t.string('last_name', 100).notNullable();
+      t.string('role', 10).defaultTo('user').notNullable();
+      t.string('email', 100).unique().notNullable();
+      t.string('provider', 25).defaultTo('local').notNullable();
+      t.string('password', 255);
+      t.text('salt');
+      t.timestamps();
     })
     .then(function() {
       console.log('created users table.');
@@ -31,6 +35,7 @@ knex.schema.hasTable('collections').then(function(exists) {
       t.increments('id').primary();
       t.string('title', 100);
       t.text('description');
+      t.integer('votes').defaultTo(0);
     })
     .then(function() {
       console.log('created collections table.');

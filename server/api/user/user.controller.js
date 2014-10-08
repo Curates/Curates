@@ -9,10 +9,8 @@ var validationError = function(res, err) {
   return res.json(422, err);
 };
 
-/**
- * Get list of users
- * restriction: 'admin'
- */
+// Get list of users
+// restriction: 'admin'
 exports.index = function(req, res) {
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err) {
@@ -20,11 +18,18 @@ exports.index = function(req, res) {
     }
     res.json(200, users);
   });
+
+  // new User({})
+  //   .fetchAll()
+  //   .then(function(users) {
+  //     return res.json(200, users.omit('salt', 'password'));
+  //   })
+  //   .catch(function(err) {
+  //     return validationError(res, err);
+  //   });
 };
 
-/**
- * Creates a new user
- */
+// Creates a new user
 exports.create = function (req, res, next) {
   var newUser = new User(req.body);
   newUser.provider = 'local';
@@ -36,11 +41,19 @@ exports.create = function (req, res, next) {
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60 * 5 });
     res.json({ token: token });
   });
+
+  // new User(req.body)
+  //   .save()
+  //   .then(function(user) {
+  //     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60 * 5 });
+  //     res.json({ token: token });
+  //   })
+  //   .catch(function(err) {
+  //     return validationError(res, err);
+  //   });
 };
 
-/**
- * Get a single user
- */
+// Get a single user
 exports.show = function (req, res, next) {
   var userId = req.params.id;
 
@@ -53,6 +66,19 @@ exports.show = function (req, res, next) {
     }
     res.json(user.profile);
   });
+
+  // new User({id: req.params.id})
+  //   .fetch({withRelated: ['collections', 'favorites']})
+  //   .then(function(user) {
+  //     return res.json({
+  //       user: user,
+  //       collections: user.related('collections').toJSON(),
+  //       favorites: user.related('favorites').toJSON()
+  //     });
+  //   })
+  //   .catch(function(err) {
+  //     validationError(res, err);
+  //   })
 };
 
 /**
@@ -61,11 +87,28 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
-    if(err) {
+    if (err) {
       return res.send(500, err)
     }
     return res.send(204);
   });
+
+  new User({id: req.param.id})
+    .fetch({withRelated: ['favorites', 'collections', 'links']})
+    .then(function(user) {
+      user.related('favorites').invokeThen('destroy');
+      user.related('collections').invokeThen('destroy');
+      user.related('links').invokeThen('destroy')
+        .then(function () {
+          return user.destroy()
+            .then(function () {
+              return res.send(204);
+            });
+        })
+        .catch(function(err) {
+          return validationError(res, err);
+        });
+    });
 };
 
 /**

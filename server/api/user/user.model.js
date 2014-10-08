@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
-var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var authTypes = ['twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
   name: String,
@@ -152,14 +152,71 @@ module.exports = mongoose.model('User', UserSchema);
 
 var knex = require('../../config/db');
 var bookshelf = require('bookshelf')(knex);
+bookshelf.plugin('virtuals');
+var Collection = require('../collection/collection.model');
+var Favorite = require('../collection/favorite.model');
+var Vote = require('../collection/vote.model');
 
 var User = bookshelf.Model.extend({
+  
   table: 'users',
 
   initialize: function() {
-    this.on('save', function() {
+    this.on('saving', function(model, attrs, options) {
+
+      if (validatePresenceOf(this.get('password')) && authTypes.indexOf(this.get('provider')) === -1) {
+        this.set('salt', this.makeSalt());
+        this.set('password', this.encryptPassword(this.get('password')));
+      }
+
+    });
+
+    this.on('created', function() {
       // Email?
     });
   },
+
+  virtuals: {
+    // Public profile information
+    profile: function() {
+      return {
+        'name': this.get('first_name') + ' ' + this.get('last_name'),
+        'role': this.get('role')
+      };
+    },
+
+    token: function() {
+      return {
+        '_id': this._id,
+        'role': this.role
+      };
+    }
+  },
+
+  authenticate: function(plainText) {
+    return this.encryptPassword(plainText) === this.get('password');
+  },
+
+  encryptPassword: function(password) {
+    if (!password || !this.get('salt')) return '';
+    var salt = new Buffer(this.get('salt'), 'base64');
+    return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+  },
+
+  makeSalt: function() {
+    return crypto.randomBytes(16).toString('base64');
+  },
+
+  collections: function() {
+    this.hasMany(Collection);
+  },
+
+  favorites: function() {
+    this.hasMany(Favorite);
+  },
+
+  votes: function() {
+    this.hasMany(Vote);
+  }
   
 });
