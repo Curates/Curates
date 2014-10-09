@@ -6,7 +6,7 @@ var knex = require('knex')({
     host     : '127.0.0.1',
     user     : 'root',
     password : '',
-    database : 'curates_dev'
+    database : 'curates',
   }
 });
 
@@ -33,14 +33,11 @@ knex.schema.hasTable('collections').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('collections', function(t) {
       t.increments('id').primary();
-      t.string('title', 100);
-      t.text('description');
+      t.string('title', 255);
+      t.string('description', 255).defaultTo('');
       t.integer('votes').defaultTo(0);
       t.integer('following').defaultTo(0);
-      t.integer('user_id')
-        .unsigned()
-        .references('id')
-        .inTable('users');
+      t.integer('user_id');
     })
     .then(function() {
       console.log('created collections table.');
@@ -52,12 +49,9 @@ knex.schema.hasTable('links').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('links', function(t) {
       t.increments('id').primary();
-      t.integer('collection_id')
-        .unsigned()
-        .references('id')
-        .inTable('collections');
-      t.string('title', 100);
-      t.text('description');
+      t.integer('collection_id');
+      t.string('title', 100).notNullable();
+      t.text('description').defaultTo('');
       t.string('url', 255);
     })
     .then(function() {
@@ -66,40 +60,30 @@ knex.schema.hasTable('links').then(function(exists) {
   }
 });
 
-knex.schema.hasTable('user_favorites').then(function(exists) {
+knex.schema.hasTable('favorites').then(function(exists) {
   if (!exists) {
-    return knex.schema.createTable('user_favorites', function(t) {
-      t.integer('user_id')
-        .unsigned()
-        .references('id')
-        .inTable('users');
-      t.integer('collection_id')
-        .unsigned()
-        .references('id')
-        .inTable('collections');
+    return knex.schema.createTable('favorites', function(t) {
+      t.integer('user_id');
+      t.integer('collection_id');
     })
     .then(function() {
-      console.log('created user_favorites table.');
+      console.log('created favorites table.');
     });
   }
 });
 
-knex.schema.hasTable('user_votes').then(function(exists) {
+knex.schema.hasTable('votes').then(function(exists) {
   if (!exists) {
-    return knex.schema.createTable('user_votes', function(t) {
-      t.integer('user_id')
-        .unsigned()
-        .references('id')
-        .inTable('users');
-      t.integer('collection_id')
-        .unsigned()
-        .references('id')
-        .inTable('collections');
+    return knex.schema.createTable('votes', function(t) {
+      t.integer('user_id');
+      t.integer('collection_id');
     })
     .then(function() {
-      console.log('created user_votes table.');
+      console.log('created votes table.');
     });
   }
 });
 
-module.exports = knex;
+var bookshelf = require('bookshelf')(knex);
+
+module.exports = bookshelf;

@@ -1,13 +1,17 @@
 'use strict';
 
-var knex = require('../../config/db');
-var bookshelf = require('bookshelf')(knex);
+var bookshelf = require('../../config/db');
 var Collection = require('../collection/collection.model');
+var User = require('../user/user.model');
 
 var Favorite = bookshelf.Model.extend({
-  table: 'user_favorites',
+  tableName: 'favorites',
   collection: function() {
-    return this.belongs(Collection);
+    return this.belongsTo(Collection);
+  },
+
+  user: function() {
+    return this.belongsTo(User);
   }
 });
 

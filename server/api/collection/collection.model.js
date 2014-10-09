@@ -1,52 +1,31 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-
-var CollectionSchema = new Schema({
-  title: String,
-  description: String,
-  // links contained in this collection
-  links: [
-    {
-      url: String,
-      description: String,
-    }
-  ],
-  // user_id for the collection's creating user
-  user: String,
-  // custom url for sharing this collection
-  url: String,
-  // Array containing user_ids of users who have starred this collection
-  starred_users: [String]
-});
-
-module.exports = mongoose.model('Collection', CollectionSchema);
-
-
-var knex = require('../../config/db');
-var bookshelf = require('bookshelf')(knex);
+var bookshelf = require('../../config/db');
 var User = require('../user/user.model');
 var Link = require('./link.model');
 var Favorite = require('../favorite/favorite.model');
 var Vote = require('../vote/vote.model');
 
 var Collection = bookshelf.Model.extend({
-  table: 'collections',
+  tableName: 'collections',
 
   user: function() {
-    return this.belongsTo(User);
+    return this.belongsTo(User, 'user_id');
   },
 
-  favorites: function() {
-    return this.hasMany(Favorite);
+  following: function() {
+    return this.hasMany(Favorite, 'collection_id');
   },
 
   votes: function() {
-    return this.hasMany(Vote);
+    var votes = this.hasMany(Vote, 'collection_id');
+    console.log(votes);
+    return votes;
   },
 
   links: function() {
-    return this.hasMany(Link);
+    return this.hasMany(Link, 'collection_id');
   }
 });
+
+module.exports = Collection;

@@ -16,8 +16,6 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 var session = require('express-session');
-var mongoStore = require('connect-mongo')(session);
-var mongoose = require('mongoose');
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -38,7 +36,7 @@ module.exports = function(app) {
     secret: config.secrets.session,
     resave: true,
     saveUninitialized: true,
-    store: new mongoStore({ mongoose_connection: mongoose.connection })
+    // store: new mongoStore({ mongoose_connection: mongoose.connection })
   }));
   
   if ('production' === env) {
