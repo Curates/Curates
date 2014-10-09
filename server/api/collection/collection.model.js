@@ -1,31 +1,29 @@
 'use strict';
 
 var bookshelf = require('../../config/db');
-var User = require('../user/user.model');
-var Link = require('./link.model');
-var Favorite = require('../favorite/favorite.model');
-var Vote = require('../vote/vote.model');
+require('../user/user.model');
+require('./link.model');
+require('../favorite/favorite.model');
+require('../vote/vote.model');
 
 var Collection = bookshelf.Model.extend({
   tableName: 'collections',
 
   user: function() {
-    return this.belongsTo(User, 'user_id');
+    return this.belongsTo('User');
   },
 
-  following: function() {
-    return this.hasMany(Favorite, 'collection_id');
+  favorites: function() {
+    return this.hasMany('Favorite');
   },
 
   votes: function() {
-    var votes = this.hasMany(Vote, 'collection_id');
-    console.log(votes);
-    return votes;
+    return this.hasMany('Vote');
   },
 
   links: function() {
-    return this.hasMany(Link, 'collection_id');
+    return this.hasMany('Link');
   }
 });
 
-module.exports = Collection;
+module.exports = bookshelf.model('Collection', Collection);

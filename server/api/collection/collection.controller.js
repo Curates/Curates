@@ -3,20 +3,17 @@
 var _ = require('lodash');
 var Collection = require('./collection.model');
 var bookshelf = require('../../config/db');
+bookshelf.plugin('registry');
 var User = require('../user/user.model');
-
-var Collections = bookshelf.Collection.extend({model: Collection});
 
 // Get list of collections
 exports.index = function(req, res) {
   // TODO: Refactor to use REDIS K:V LRU cache for faster access
   new Collection().fetchAll()
     .then(function(collections) {
-      console.log('made it here..')
       return res.status(200).json(collections)
     })
     .catch(function(err) {
-      console.log('got an error');
       return handleError(res, err);
     });
 };
@@ -24,19 +21,17 @@ exports.index = function(req, res) {
 // Get a single collection
 exports.show = function(req, res) {
   new Collection({id: req.params.id})
-    .fetch({withRelated:['links', 'votes', 'following']})
+    .fetch({withRelated:['links', 'votes', 'favorites']})
     .then(function(collection) {
-      if (!collection) {
-        return res.send(404);
-      }
       return res.status(200).json({
         collection: collection,
-        links: collection.related('links').toJSON(),
-        votes: collection.related('votes').toJSON(),
-        favorites: collection.related('following').toJSON()
+        links: collection.related('links'),
+        votes: collection.related('votes'),
+        favorites: collection.related('favorites')
       });
     })
     .catch(function(err) {
+      console.log(err);
       return handleError(res, err);
     });
 };
@@ -78,9 +73,9 @@ exports.update = function(req, res) {
 // Deletes a collection from the DB.
 exports.destroy = function(req, res) {
   new Collection({id: req.param.id})
-    .fetch({withRelated: ['following', 'votes', 'links']})
+    .fetch({withRelated: ['favorites', 'votes', 'links']})
     .then(function(collection) {
-      collection.related('following').invokeThen('destroy');
+      collection.related('favorites').invokeThen('destroy');
       collection.related('votes').invokeThen('destroy');
       collection.related('links').invokeThen('destroy')
         .then(function () {
@@ -98,7 +93,7 @@ exports.destroy = function(req, res) {
 // Fetch a users collections
 exports.userCollections = function(req, res, next) {
   new User({id: req.params.id})
-    .fetch({withRelated: ['collections', 'following', 'votes']})
+    .fetch({withRelated: ['collections', 'favorites', 'votes']})
     .then(function(user) {
       if (!user) {
         return res.send(404);
@@ -106,7 +101,7 @@ exports.userCollections = function(req, res, next) {
       return res.status(200).json({
         user: user,
         links: user.related('collections').toJSON(),
-        following: user.related('following').toJSON(),
+        favorites: user.related('favorites').toJSON(),
         votes: user.related('votes').toJSON()
       });
     })

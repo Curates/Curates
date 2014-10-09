@@ -2,12 +2,10 @@
 
 var crypto = require('crypto');
 var authTypes = ['twitter', 'facebook', 'google'];
-
 var bookshelf = require('../../config/db');
-bookshelf.plugin('virtuals');
-var Collection = require('../collection/collection.model');
-var Favorite = require('../favorite/favorite.model');
-var Vote = require('../vote/vote.model');
+require('../collection/collection.model');
+require('../favorite/favorite.model');
+require('../vote/vote.model');
 
 var User = bookshelf.Model.extend({
   
@@ -68,17 +66,17 @@ var User = bookshelf.Model.extend({
   },
 
   collections: function() {
-    this.hasMany(Collection);
+    this.hasMany('Collection');
   },
 
   favorites: function() {
-    this.hasMany(Favorite);
+    this.hasMany('Favorite');
   },
 
   votes: function() {
-    this.hasMany(Vote);
+    this.hasMany('Vote');
   }
   
 });
 
-module.exports = User;
+module.exports = bookshelf.model('User', User);

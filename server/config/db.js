@@ -63,6 +63,7 @@ knex.schema.hasTable('links').then(function(exists) {
 knex.schema.hasTable('favorites').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('favorites', function(t) {
+      t.increments('id').primary();
       t.integer('user_id');
       t.integer('collection_id');
     })
@@ -75,6 +76,7 @@ knex.schema.hasTable('favorites').then(function(exists) {
 knex.schema.hasTable('votes').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('votes', function(t) {
+      t.increments('id').primary();
       t.integer('user_id');
       t.integer('collection_id');
     })
@@ -85,5 +87,7 @@ knex.schema.hasTable('votes').then(function(exists) {
 });
 
 var bookshelf = require('bookshelf')(knex);
+bookshelf.plugin('virtuals');
+bookshelf.plugin('registry');
 
 module.exports = bookshelf;
