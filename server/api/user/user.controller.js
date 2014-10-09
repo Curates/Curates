@@ -24,7 +24,7 @@ exports.index = function(req, res) {
 // Creates a new user
 exports.create = function (req, res, next) {
   req.body.provider = 'local';
-  
+
   new User(req.body)
     .save()
     .then(function(user) {
@@ -80,7 +80,7 @@ exports.changePassword = function(req, res, next) {
     .fetch()
     .then(function(user) {
       if (user.authenticate(req.body.oldPassword)) {
-        user.password = newPass;
+        user.set('password', req.body.newPass);
         user.save()
           .then(function() {
             return res.send(200);
