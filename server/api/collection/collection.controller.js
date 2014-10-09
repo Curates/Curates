@@ -1,9 +1,8 @@
 'use strict';
 
 var _ = require('lodash');
-var Collection = require('./collection.model');
 var bookshelf = require('../../config/db');
-bookshelf.plugin('registry');
+var Collection = require('./collection.model');
 var User = require('../user/user.model');
 
 // Get list of collections
@@ -93,16 +92,11 @@ exports.destroy = function(req, res) {
 // Fetch a users collections
 exports.userCollections = function(req, res, next) {
   new User({id: req.params.id})
-    .fetch({withRelated: ['collections', 'favorites', 'votes']})
+    .fetch({withRelated: ['collections']})
     .then(function(user) {
-      if (!user) {
-        return res.send(404);
-      }
       return res.status(200).json({
         user: user,
-        links: user.related('collections').toJSON(),
-        favorites: user.related('favorites').toJSON(),
-        votes: user.related('votes').toJSON()
+        collections: user.related('collections'),
       });
     })
     .catch(function(err) {

@@ -22,7 +22,7 @@ var User = bookshelf.Model.extend({
         model.password = model.encryptPassword(model.password);
       }
       this.set('salt', model.salt);
-      this.set('password', model.salt).save();
+      this.set('password', model.password).save();
     });
 
   },
@@ -66,15 +66,15 @@ var User = bookshelf.Model.extend({
   },
 
   collections: function() {
-    this.hasMany('Collection');
+    return this.hasMany('Collection');
   },
 
   favorites: function() {
-    this.hasMany('Favorite');
+    return this.hasMany('Favorite');
   },
 
   votes: function() {
-    this.hasMany('Vote');
+    return this.hasMany('Vote');
   }
   
 });
