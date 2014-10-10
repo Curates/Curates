@@ -41,11 +41,7 @@ exports.show = function (req, res, next) {
   new User({id: req.params.id})
     .fetch({withRelated: ['collections', 'favorites']})
     .then(function(user) {
-      return res.json({
-        user: user.profile,
-        collections: user.related('collections').toJSON(),
-        favorites: user.related('favorites').toJSON()
-      });
+      return res.json(user.omit('salt', 'password'));
     })
     .catch(function(err) {
       validationError(res, err);
