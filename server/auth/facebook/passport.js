@@ -8,7 +8,6 @@ exports.setup = function (User, config) {
     callbackURL: config.facebook.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log('passport.js line 11');
     new User({email: profile.emails[0].value})
       .fetch()
       .then(function(user) {
@@ -30,6 +29,7 @@ exports.setup = function (User, config) {
               return done(err);
             });
         }
+        return done(undefined, user);
       })
       .catch(function(err) {
         done(err);

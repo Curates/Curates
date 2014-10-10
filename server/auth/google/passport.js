@@ -12,7 +12,6 @@ exports.setup = function (User, config) {
         .fetch()
         .then(function(user) {
           if (!user) {
-            console.log('no user');
             var newUser = new User({
               first_name: profile.displayName.split(' ')[0],
               last_name: profile.displayName.split(' ')[1],
