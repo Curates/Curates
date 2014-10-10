@@ -7,7 +7,7 @@ exports.setup = function (User, config) {
       passwordField: 'password' // this is the virtual field on the model
     },
     function(email, password, done) {
-      new User({email: email.toLowerCase()}
+      new User({email: email.toLowerCase()})
         .fetch()
         .then(function(user) {
         if (!user) {
@@ -20,7 +20,7 @@ exports.setup = function (User, config) {
       })
       .catch(function(err) {
         done(err);
-      }));
+      });
     }
   ));
 };

@@ -24,7 +24,7 @@ function isAuthenticated() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-      new User({id: req.user.id})
+      new User({id: req.user._id})
         .fetch()
         .then(function(user) {
           if (!user) {

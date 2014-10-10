@@ -8,25 +8,26 @@ exports.setup = function (User, config) {
     callbackURL: config.twitter.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    new User({email: profile.emails[0].value})
+    new User({email: profile.username + 'auth.twitter.com'})
       .fetch()
       .then(function(user) {
         if (!user) {
           var newUser = new User({
             first_name: profile.displayName.split(' ')[0],
             last_name: profile.displayName.split(' ')[1],
-            email: profile.emails[0].value,
+            email: profile.username + 'auth.twitter.com',
             role: 'twitter',
             provider: 'facebook',
           });
           newUser.save()
             .then(function(user) {
-              return done(null, user);
+              return done(undefined, user);
             })
             .catch(function(err) {
               return done(err);
             });
         }
+        return done(undefined, user);
       })
       .catch(function(err) {
         done(err);

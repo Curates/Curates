@@ -20,9 +20,10 @@ var User = bookshelf.Model.extend({
       if (authTypes.indexOf(model.provider) === -1) {
         model.salt = model.makeSalt();
         model.password = model.encryptPassword(model.password);
+        this.set('salt', model.salt);
+        this.set('password', model.password).save();
       }
-      this.set('salt', model.salt);
-      this.set('password', model.password).save();
+      
     });
 
   },

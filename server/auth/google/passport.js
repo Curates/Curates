@@ -8,7 +8,7 @@ exports.setup = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      new User({email: profile.emails[0].value})
+      new User({email: profile.emails[0].value, provider: 'google'})
         .fetch()
         .then(function(user) {
           if (!user) {
@@ -27,6 +27,7 @@ exports.setup = function (User, config) {
                 return done(err);
               });
           }
+          return done(null, user);
         })
         .catch(function(err) {
           done(err);

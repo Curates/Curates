@@ -99,7 +99,7 @@ exports.changePassword = function(req, res, next) {
 
 // Get my info
 exports.me = function(req, res, next) {
-  new User({id: req.params.id})
+  new User({id: req.user.id})
     .fetch({withRelated: ['collections', 'favorites']})
     .then(function(user) {
       return res.json({
