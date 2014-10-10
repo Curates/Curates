@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: UsercollectionsCtrl', function () {
+describe('Controller: CollectionsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('curatesApp'));
 
-  var UsercollectionsCtrl, scope;
+  var CollectionsCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    UsercollectionsCtrl = $controller('UsercollectionsCtrl', {
+    CollectionsCtrl = $controller('CollectionsCtrl', {
       $scope: scope
     });
   }));

@@ -1,0 +1,30 @@
+.collection {
+    padding: 55px 0;
+    border-bottom: 1px solid #ddd;
+}
+.collection header h2{
+    display: inline;
+    font-family: PT Serif; 
+}
+.rank {
+    font-size: 24px;
+    color: #ECBCBC;
+}
+.fa {
+    color: #ddd;
+    padding-left: 5px;
+}
+.fa:hover {
+    color:#fb6d53;
+}
+.actions {
+    float: right;
+    padding: 10px;
+}
+.description {
+    display: block;
+    color: #F4DDDD;
+}
+.tags {
+    padding-top: 10px;
+}
