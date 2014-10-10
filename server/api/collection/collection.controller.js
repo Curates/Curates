@@ -10,7 +10,7 @@ exports.index = function(req, res) {
   // TODO: Refactor to use REDIS K:V LRU cache for faster access
   new Collection().fetchAll()
     .then(function(collections) {
-      return res.status(200).json(collections)
+      return res.json(200, collections)
     })
     .catch(function(err) {
       return handleError(res, err);
@@ -22,12 +22,7 @@ exports.show = function(req, res) {
   new Collection({id: req.params.id})
     .fetch({withRelated:['links', 'votes', 'favorites']})
     .then(function(collection) {
-      return res.status(200).json({
-        collection: collection,
-        links: collection.related('links'),
-        votes: collection.related('votes'),
-        favorites: collection.related('favorites')
-      });
+      return res.json(200, collection);
     })
     .catch(function(err) {
       console.log(err);
@@ -40,7 +35,7 @@ exports.create = function(req, res) {
   var newColl = new Collection(req.body);
   newColl.save()
     .then(function(collection) {
-      return res.status(201).json(collection);
+      return res.json(201, collection);
     })
     .catch(function(err) {
       return handleError(res, err);
@@ -58,7 +53,7 @@ exports.update = function(req, res) {
       var updated = _.merge(collection, req.body);
       updated.save()
         .then(function(collection) {
-          return res.status(200).json(collection);
+          return res.json(200, collection);
         })
         .catch(function(err) {
           return handleError(res, err);
@@ -94,10 +89,7 @@ exports.userCollections = function(req, res, next) {
   new User({id: req.params.id})
     .fetch({withRelated: ['collections']})
     .then(function(user) {
-      return res.status(200).json({
-        user: user,
-        collections: user.related('collections'),
-      });
+      return res.json(200, user.related('collections'));
     })
     .catch(function(err) {
       return handleError(res, err);
