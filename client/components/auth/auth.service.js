@@ -107,6 +107,7 @@ angular.module('curatesApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
+        console.log(currentUser)
         return currentUser.hasOwnProperty('role');
       },
 
