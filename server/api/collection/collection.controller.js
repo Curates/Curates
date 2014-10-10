@@ -8,7 +8,8 @@ var User = require('../user/user.model');
 // Get list of collections
 exports.index = function(req, res) {
   // TODO: Refactor to use REDIS K:V LRU cache for faster access
-  new Collection().fetchAll()
+  new Collection()
+    .fetchAll()
     .then(function(collections) {
       return res.json(200, collections)
     })
