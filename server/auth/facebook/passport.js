@@ -8,9 +8,11 @@ exports.setup = function (User, config) {
     callbackURL: config.facebook.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
+    console.log('passport.js line 11');
     new User({email: profile.emails[0].value})
       .fetch()
       .then(function(user) {
+        console.log(user);
         if (!user) {
           var newUser = new User({
             first_name: profile.displayName.split(' ')[0],
@@ -21,7 +23,8 @@ exports.setup = function (User, config) {
           });
           newUser.save()
             .then(function(user) {
-              return done(null, user);
+              console.log('got here');
+              return done(undefined, user);
             })
             .catch(function(err) {
               return done(err);

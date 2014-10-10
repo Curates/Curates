@@ -8,10 +8,11 @@ exports.setup = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      new User({email: profile.emails[0].value})
+      new User({email: profile.emails[0].value, provider: 'google'})
         .fetch()
         .then(function(user) {
           if (!user) {
+            console.log('no user');
             var newUser = new User({
               first_name: profile.displayName.split(' ')[0],
               last_name: profile.displayName.split(' ')[1],
@@ -27,6 +28,7 @@ exports.setup = function (User, config) {
                 return done(err);
               });
           }
+          return done(null, user);
         })
         .catch(function(err) {
           done(err);

@@ -10,7 +10,8 @@ angular.module('curatesApp')
 
       if(form.$valid) {
         Auth.createUser({
-          name: $scope.user.name,
+          first_name: $scope.user.first_name,
+          last_name: $scope.user.last_name,
           email: $scope.user.email,
           password: $scope.user.password
         })
