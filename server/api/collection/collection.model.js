@@ -1,24 +1,29 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var bookshelf = require('../../config/db');
+require('../user/user.model');
+require('./link.model');
+require('../favorite/favorite.model');
+require('../vote/vote.model');
 
-var CollectionSchema = new Schema({
-  title: String,
-  description: String,
-  // links contained in this collection
-  links: [
-    {
-      url: String,
-      description: String,
-    }
-  ],
-  // user_id for the collection's creating user
-  user: String,
-  // custom url for sharing this collection
-  url: String,
-  // Array containing user_ids of users who have starred this collection
-  starred_users: [String]
+var Collection = bookshelf.Model.extend({
+  tableName: 'collections',
+
+  user: function() {
+    return this.belongsTo('User');
+  },
+
+  favorites: function() {
+    return this.hasMany('Favorite');
+  },
+
+  votes: function() {
+    return this.hasMany('Vote');
+  },
+
+  links: function() {
+    return this.hasMany('Link');
+  }
 });
 
-module.exports = mongoose.model('Collection', CollectionSchema);
+module.exports = bookshelf.model('Collection', Collection);
