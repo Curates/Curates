@@ -8,26 +8,29 @@ exports.setup = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      User.findOne({
-        'google.id': profile.id
-      }, function(err, user) {
-        if (!user) {
-          user = new User({
-            name: profile.displayName,
-            email: profile.emails[0].value,
-            role: 'user',
-            username: profile.username,
-            provider: 'google',
-            google: profile._json
-          });
-          user.save(function(err) {
-            if (err) done(err);
-            return done(err, user);
-          });
-        } else {
-          return done(err, user);
-        }
-      });
+      new User({email: profile.emails[0].value})
+        .fetch()
+        .then(function(user) {
+          if (!user) {
+            var newUser = new User({
+              first_name: profile.displayName.split(' ')[0],
+              last_name: profile.displayName.split(' ')[1],
+              email: profile.emails[0].value,
+              role: 'user',
+              provider: 'google',
+            });
+            newUser.save()
+              .then(function(user) {
+                return done(null, user);
+              })
+              .catch(function(err) {
+                return done(err);
+              });
+          }
+        })
+        .catch(function(err) {
+          done(err);
+        });
     }
   ));
 };

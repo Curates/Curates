@@ -1,35 +1,35 @@
-exports.setup = function (User, config) {
-  var passport = require('passport');
-  var TwitterStrategy = require('passport-twitter').Strategy;
+var passport = require('passport');
+var TwitterStrategy = require('passport-twitter').Strategy;
 
+exports.setup = function (User, config) {
   passport.use(new TwitterStrategy({
     consumerKey: config.twitter.clientID,
     consumerSecret: config.twitter.clientSecret,
     callbackURL: config.twitter.callbackURL
   },
-  function(token, tokenSecret, profile, done) {
-    User.findOne({
-      'twitter.id_str': profile.id
-    }, function(err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        user = new User({
-          name: profile.displayName,
-          username: profile.username,
-          role: 'user',
-          provider: 'twitter',
-          twitter: profile._json
-        });
-        user.save(function(err) {
-          if (err) return done(err);
-          return done(err, user);
-        });
-      } else {
-        return done(err, user);
-      }
-    });
-    }
-  ));
+  function(accessToken, refreshToken, profile, done) {
+    new User({email: profile.emails[0].value})
+      .fetch()
+      .then(function(user) {
+        if (!user) {
+          var newUser = new User({
+            first_name: profile.displayName.split(' ')[0],
+            last_name: profile.displayName.split(' ')[1],
+            email: profile.emails[0].value,
+            role: 'twitter',
+            provider: 'facebook',
+          });
+          newUser.save()
+            .then(function(user) {
+              return done(null, user);
+            })
+            .catch(function(err) {
+              return done(err);
+            });
+        }
+      })
+      .catch(function(err) {
+        done(err);
+      });
+  }));
 };
