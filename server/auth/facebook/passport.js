@@ -11,7 +11,6 @@ exports.setup = function (User, config) {
     new User({email: profile.emails[0].value})
       .fetch()
       .then(function(user) {
-        console.log(user);
         if (!user) {
           var newUser = new User({
             first_name: profile.displayName.split(' ')[0],

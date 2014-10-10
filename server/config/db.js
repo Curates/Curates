@@ -35,8 +35,6 @@ knex.schema.hasTable('collections').then(function(exists) {
       t.increments('id').primary();
       t.string('title', 255);
       t.string('description', 255).defaultTo('');
-      t.integer('votes').defaultTo(0);
-      t.integer('following').defaultTo(0);
       t.integer('user_id');
     })
     .then(function() {

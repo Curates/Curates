@@ -8,7 +8,7 @@ exports.setup = function (User, config) {
       callbackURL: config.google.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      new User({email: profile.emails[0].value, provider: 'google'})
+      new User({email: profile.emails[0].value})
         .fetch()
         .then(function(user) {
           if (!user) {
