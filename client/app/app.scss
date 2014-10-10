@@ -1,13 +1,48 @@
 $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
 
+
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import 'variables';
 @import 'font-awesome/scss/font-awesome';
 
 /**
  * App-wide Styles
  */
+body {
+  background: #DB746F;
+  color: #fafafa;
+}
+input:focus {
+  outline: 0;
+}
+::-webkit-input-placeholder {
+  line-height: 30px;
+  /*font-size: 18px;*/
+  color: white;
+  opacity: .4;
+}
 
+:-moz-placeholder { /* Firefox 18- */
+  line-height: 30px;
+  /*font-size: 18px;*/
+  color: #fff ;
+  -moz-opacity: .4;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  line-height: 30px;
+  font-size: 18px;
+  color: #fff ;
+  -moz-opacity: .4;
+}
+
+:-ms-input-placeholder {  
+  line-height: 30px;
+  /*font-size: 18px;*/
+  color: #fff ;
+  -ms-opacity: .4;
+}
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -18,11 +53,14 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // Component styles are injected through grunt
 // injector
 @import 'account/login/login.scss';
-@import 'admin/admin.scss';
 @import 'browse/browse.scss';
+@import 'collections/collections.scss';
 @import 'create/create.scss';
 @import 'edit/edit.scss';
 @import 'main/main.scss';
-@import 'userCollections/userCollections.scss';
+@import 'search/search.scss';
+@import 'variables.scss';
+@import 'collection/collection.scss';
 @import 'modal/modal.scss';
+@import 'navbar/navbar.scss';
 // endinjector
