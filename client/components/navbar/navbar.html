@@ -1,4 +1,4 @@
-<div class="col-sm-2 nav-container">
+<div class="col-sm-2 nav-container" ng-controller="NavbarCtrl">
   <div class="sidebar-nav">
     <div class="navbar navbar-curates" role="navigation">
       <div class="nav-splash"></div>
@@ -14,10 +14,10 @@
       <div class="navbar-collapse collapse sidebar-navbar-collapse">
         <ul class="nav navbar-nav">
           <li><a ui-sref="main">Home</a></li>
-          <li ng-show="!isLoggedIn"><a ui-sref="login">Sign Up</a></li>
-          <li ng-show="isLoggedIn"><a ui-sref="collections">Collections</a></li>
-          <li ng-show="isLoggedIn"><a ui-sref="settings">Settings</a> </li>
-          <li ng-show="isLoggedIn" class="active"><a href="#">Sign Out</a></li>
+          <li ng-show="!isLoggedIn()"><a ui-sref="login">Log In</a></li>
+          <li ng-show="isLoggedIn()"><a ui-sref="collections">Collections</a></li>
+          <li ng-show="isLoggedIn()"><a ui-sref="settings">Settings</a> </li>
+          <li ng-show="isLoggedIn()"><a ng-click="logout()">Sign Out</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
