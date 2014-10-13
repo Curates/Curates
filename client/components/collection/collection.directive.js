@@ -33,8 +33,8 @@ angular.module('curatesApp')
         };
 
         scope.upvote = function(){
-          console.log('upvoted')
-        }
+          console.log('upvoted');
+        };
       }
     };
   });
