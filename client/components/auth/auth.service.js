@@ -21,8 +21,7 @@ angular.module('curatesApp')
         var deferred = $q.defer();
 
         $http.post('/auth/local', {
-          email: user.email,
-          password: user.password
+          email: user.email, password: user.password
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
@@ -47,6 +46,7 @@ angular.module('curatesApp')
       logout: function() {
         $cookieStore.remove('token');
         currentUser = {};
+        $location.path('/main')
       },
 
       /**
@@ -106,8 +106,10 @@ angular.module('curatesApp')
        *
        * @return {Boolean}
        */
+      
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+        // modified isLoggedIn method to the following. the scaffold method created by angular-fullstack was jacked...
+        return currentUser.user ? currentUser.user.hasOwnProperty('role') : false;
       },
 
       /**

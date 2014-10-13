@@ -1,3 +1,3 @@
-<search source="collections"></search>
+<search source="collections" ng-model="search.title"></search>
 
-<collection ng-repeat="collection in collections" data="collection"/>
+<collection ng-repeat="collection in collections | orderObjectBy:'rank':'desc'" data="collection"/>

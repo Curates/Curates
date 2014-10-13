@@ -8,13 +8,16 @@ angular.module('curatesApp')
     }];
 
     $scope.isCollapsed = true;
-    $scope.isLoggedIn = Auth.isLoggedIn;
+
+    $scope.isLoggedIn = Auth.isLoggedIn
+    console.log($scope.isLoggedIn())
+
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
 
     $scope.logout = function() {
       Auth.logout();
-      $location.path('/login');
+      $location.path('/');
     };
 
     $scope.isActive = function(route) {

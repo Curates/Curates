@@ -1,3 +1,2 @@
-<search source="userCollections"></search>
-
-<collection ng-repeat="collection in userCollections" data="collection"/>
+<search source="userCollections" ng-model="search"></search>
+<collection ng-repeat="collection in userCollections | orderObjectBy:'rank'" data="collection"/>

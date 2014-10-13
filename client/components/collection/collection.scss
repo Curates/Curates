@@ -1,14 +1,44 @@
 .collection {
-    padding: 55px 0;
+    margin: 15px 0;
+    padding: 20px 15px; 
     border-bottom: 1px solid #ddd;
+}
+.collection:hover {
+    background: #EA8C87;
+}
+.rank-container {
+    padding-left: 0;
+}
+.upvote {
+    top: -5px;
+    width: 30px;
+    padding: 0;
+    display: none;
+    cursor: pointer;
+    font-size:2em;
+    position: absolute;
+    text-align: center;
+}
+.expand {
+    cursor: pointer;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: 5%;     
+    display: none;
+}
+.rank {
+    padding: 0 30px;
+    font-size: 24px;
+    color: #ECBCBC; 
+}
+.collection:hover .expand,
+.collection:hover .upvote {
+    display:block
 }
 .collection header h2{
     display: inline;
     font-family: PT Serif; 
-}
-.rank {
-    font-size: 24px;
-    color: #ECBCBC;
 }
 .fa {
     color: #ddd;
@@ -27,4 +57,14 @@
 }
 .tags {
     padding-top: 10px;
+}
+.links {
+    display: inline-block;
+    -moz-transition: height .5s;
+    -ms-transition: height .5s;
+    -o-transition: height .5s;
+    -webkit-transition: height .5s;
+    transition: height .5s;
+    height: 0;
+    overflow: hidden;     
 }
