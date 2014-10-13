@@ -6,6 +6,14 @@ angular.module('curatesApp')
       .state('main', {
         url: '/',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        resolve: {
+          collections: function(Collections) {
+            return Collections.fetchAll()
+              .then(function(collections) {
+                return collections.data;
+              });
+          }
+        }
       });
   });
