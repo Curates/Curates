@@ -1,3 +1,10 @@
-<div class="col-md-12">
-This is the create view.
-</div>
+<section id="create">
+  <form role="form">  
+    <input type="text" id="title" ng-model="newCollection.title" placeholder="Enter a title">
+
+    <input type="text" id="description" ng-model="newCollection.description" placeholder="Enter a description">
+
+    <textarea rows="3" id="links" ng-model="newCollection.links" placeholder="Separate links by a new line"></textarea>
+    <button type="submit" class="btn btn-default">Create</button>
+  </form>
+</section>

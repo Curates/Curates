@@ -46,7 +46,7 @@ angular.module('curatesApp')
       logout: function() {
         $cookieStore.remove('token');
         currentUser = {};
-
+        $location.path('/main')
       },
 
       /**

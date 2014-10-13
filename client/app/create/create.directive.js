@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('curatesApp')
-  .directive('search', function () {
+  .directive('create', function () {
     return {
-      templateUrl: 'app/search/search.directive.html',
+      templateUrl: 'app/create/create.html',
       restrict: 'EA',
       link: function (scope, element, attrs) {
-        
       }
     };
   });

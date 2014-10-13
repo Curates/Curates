@@ -18,4 +18,9 @@ angular.module('curatesApp')
         });
       }
 		};
+
+    $scope.disconnect = function () {
+      Auth.logout();
+      
+    }
   });

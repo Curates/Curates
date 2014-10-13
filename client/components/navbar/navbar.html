@@ -13,11 +13,13 @@
       </div>
       <div class="navbar-collapse collapse sidebar-navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a ui-sref="main">Home</a></li>
+          <li><a ui-sref="main">Browse</a></li>
           <li ng-show="!isLoggedIn()"><a ui-sref="login">Log In</a></li>
-          <li ng-show="isLoggedIn()"><a ui-sref="collections">Collections</a></li>
+          <li ng-show="isLoggedIn()"><a ui-sref="favorites">My Favorites</a></li>
+          <li ng-show="isLoggedIn()"><a ui-sref="collections">My Collections</a></li>
+          <li ng-show="isLoggedIn()"><a ui-sref="create">Create</a> </li>
           <li ng-show="isLoggedIn()"><a ui-sref="settings">Settings</a> </li>
-          <li ng-show="isLoggedIn()"><a ng-click="logout()">Sign Out</a></li>
+          <!-- <li ng-show="isLoggedIn()"><a ng-click="logout()">Sign Out</a></li> -->
         </ul>
       </div><!--/.nav-collapse -->
     </div>
