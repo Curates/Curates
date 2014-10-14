@@ -10,7 +10,6 @@ angular.module('curatesApp')
         url: '/api/collections',
       })
       .success(function(data) {
-        console.log(data);
         return data;
       })
       .error(function(data) {

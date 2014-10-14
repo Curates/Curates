@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('curatesApp')
-  .factory('Favorites', function (User) {
+  .factory('Favorites', function ($http) {
 
     // Get list of favorites
     var fetchAll = function() {
@@ -61,6 +61,7 @@ angular.module('curatesApp')
     };
 
     return {
+      fetchAll: fetchAll,
       fetchUserFavorites: fetchUserFavorites,
       addFavorite: addFavorite,
       removeFavorite: removeFavorite
