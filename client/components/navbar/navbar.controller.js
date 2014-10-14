@@ -9,8 +9,7 @@ angular.module('curatesApp')
 
     $scope.isCollapsed = true;
 
-    $scope.isLoggedIn = Auth.isLoggedIn
-    console.log($scope.isLoggedIn())
+    $scope.isLoggedIn = Auth.isLoggedIn;
 
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
