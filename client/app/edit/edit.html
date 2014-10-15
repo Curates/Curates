@@ -1,3 +1,19 @@
-<div class="col-md-12">
-This is the edit view.
-</div>
+<article id="create">
+
+  <section>
+    <h3> Edit Collection</h3>
+    <span editable-text="collection.title">{{collection.title}}</span> 
+    <br>
+    <span editable-text="collection.description">{{collection.description}}</span> 
+  </section>
+
+  <table class="table table-condensed table-striped table-bordered">
+    <tr ng-repeat="link in collection.links">
+      <td> <span editable-text="collection.links[$index].title">{{link.title}}</span> </td>
+      <td><span editable-text="collection.links[$index].url">{{link.url}}</span> </td>
+      <td><span editable-text="collection.links[$index].description">{{link.description}}</span> </td>
+      <td class="close-box"><button type="button" class="close glyphicon glyphicon-remove" data-dismiss="alert" aria-hidden="true" ng-click="remove($index)"></button></td>
+    </tr>
+  </table>
+  <button class="btn btn-primary" ng-click="save()"> Save </button>
+</article>

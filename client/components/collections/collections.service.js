@@ -51,7 +51,7 @@ angular.module('curatesApp')
     var editCollection = function (collection) {
       return $http({
         method: 'PUT',
-        url: '/api/collections/' + collection._id,
+        url: '/api/collections/' + collection.id,
         data: collection
       })
       .success(function(data) {

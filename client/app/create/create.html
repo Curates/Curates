@@ -1,10 +1,8 @@
-<section id="create">
-  <form role="form">  
-    <input type="text" id="title" ng-model="newCollection.title" placeholder="Enter a title">
-
-    <input type="text" id="description" ng-model="newCollection.description" placeholder="Enter a description">
-
-    <textarea rows="3" id="links" ng-model="newCollection.links" placeholder="Separate links by a new line"></textarea>
-    <button type="submit" class="btn btn-default">Create</button>
+<article id="create">
+  <form role="form">
+    <h3> Create Collection</h3>
+    <input type="text" id="title" ng-model="collection.title" placeholder="Enter a title">
+    <input type="text" id="description" ng-model="collection.description" placeholder="Enter a description">
   </form>
-</section>
+  <button class="btn btn-primary" ng-click="create()"> Create </button>
+</article>
