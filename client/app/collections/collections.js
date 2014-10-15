@@ -16,5 +16,18 @@ angular.module('curatesApp')
               });
           }
         }
-      });
+      })
+      .state('collections.id', {
+        url: '/{id}',
+        templateUrl: 'app/collections/collection.html',
+        controller: 'CollectionCtrl',
+        resolve: {
+          collection: function(Auth, Collections, $stateParams) {
+            return Collections.fetchCollection($stateParams.id)
+              .then(function(collection) {
+                return collection.data;
+              });
+          }
+        }
+      });;
   });

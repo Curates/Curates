@@ -4,7 +4,7 @@
     <div class="col-sm-1 rank">{{data.votes.length}}</div>
   </div>
   <header class="col-sm-10">
-    <h2> {{data.title}} </h2>
+    <h2 ng-click="go(data.id)"> {{data.title}} </h2>
     <span class="actions"> <a ng-click="favorite(data.id)" href=""><i class="fa fa-star-o fa-lg"></i></a> <a href=""><i class="fa fa-copy fa-lg"></i></a></span>
     <span class="description">{{data.description}}</span>
     <ul class="list-inline tags">
