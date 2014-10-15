@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('curatesApp')
-  .directive('collection', function (Favorites, Collections, Auth) {
+  .directive('collection', function (Favorites, Collections, Auth, $state) {
     return {
       templateUrl: 'components/collection/collection.html',
       restrict: 'EA',
@@ -11,6 +11,11 @@ angular.module('curatesApp')
       link: function (scope, element, attrs) {
         var expanded = false;
         
+        scope.go = function(id) {
+          console.log(id)
+          $state.go('collections.id', {id: id});
+        };
+
         scope.favorite = function(collection_id) {
           var user_id = Auth.getCurrentUser().user.id;
           Favorites.addFavorite({collection_id: collection_id, user_id: user_id});
