@@ -5,6 +5,7 @@ var Vote = require('./vote.model');
 
 // Creates a new vote
 exports.create = function(req, res) {
+  
   new Vote(req.body)
     .save()
     .then(function(vote) {
