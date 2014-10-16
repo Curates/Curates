@@ -4,6 +4,7 @@ var _ = require('lodash');
 var bookshelf = require('../../config/db');
 var Collection = require('./collection.model');
 var User = require('../user/user.model');
+var Link = require('./link.model');
 
 // Get list of collections
 exports.index = function(req, res) {
@@ -47,13 +48,23 @@ exports.update = function(req, res) {
   new Collection({id: req.params.id})
     .fetch()
     .then(function(collection) {
+      // Ensure the collection exists before attempting to save
       if (!collection) {
         return res.send(404);
       }
+
+      // Create new links or update with new descriptions
+      req.body.links.forEach(function(link) {
+        new Link(link).save();
+      });
+
+      // Update the collection itself by overwriting the properties
       var updated = _.merge(collection, req.body);
       updated.save()
         .then(function(collection) {
-          return res.json(200, collection);
+          // No need to send back the updated collection because client
+          // is cacheing changes.
+          return res.send(200);
         })
         .catch(function(err) {
           return handleError(res, err);

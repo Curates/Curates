@@ -12,7 +12,6 @@ angular.module('curatesApp')
         var expanded = false;
         
         scope.go = function(id) {
-          console.log(id)
           $state.go('collections.id', {id: id});
         };
 
