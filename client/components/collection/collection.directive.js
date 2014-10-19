@@ -8,7 +8,7 @@ angular.module('curatesApp')
       scope: {
         data: '='
       },
-      link: function (scope, element, attrs) {
+      link: function (scope, element) {
         var expanded = false;
         
         scope.go = function(id) {
@@ -20,7 +20,7 @@ angular.module('curatesApp')
           Favorites.addFavorite({collection_id: collection_id, user_id: user_id});
         };
 
-        scope.clone = function(collection){
+        scope.clone = function(collection) {
           var user_id = Auth.getCurrentUser().user.id;
           if (collection.user_id === user_id) {
             return new Error('Cannot clone your own collections');
@@ -29,7 +29,7 @@ angular.module('curatesApp')
           Collections.addCollection({collection: collection, user_id: user_id});
         };
 
-        scope.expand = function(event){
+        scope.expand = function(event) {
           if (expanded) {
             element.find('.links').css({
               height: 0
@@ -44,9 +44,9 @@ angular.module('curatesApp')
           expanded = !expanded;
         };
 
-        scope.upvote = function(collection_id){
+        scope.upvote = function(id) {
           var user_id = Auth.getCurrentUser().user.id;
-          Votes.addVote({collection_id: collection_id, user_id: user_id});
+          Votes.addVote({collection_id: id, user_id: user_id});
         };
       }
     };

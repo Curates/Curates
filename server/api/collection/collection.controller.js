@@ -34,13 +34,22 @@ exports.show = function(req, res) {
 // Creates a new collection in the DB.
 exports.create = function(req, res) {
   var newColl = new Collection(req.body);
-  newColl.save()
-    .then(function(collection) {
-      return res.json(201, collection);
+  newColl.fetch()
+    .then(function(found) {
+      if (!found) {
+        newColl.save()
+          .then(function(collection) {
+            return res.json(201, collection);
+          })
+          .catch(function(err) {
+            return handleError(res, err);
+          });
+      }
     })
     .catch(function(err) {
       return handleError(res, err);
-    })
+    });
+
 };
 
 // Updates an existing collection in the DB.

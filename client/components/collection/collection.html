@@ -1,18 +1,12 @@
 <article class="col-sm-12 collection">
   <div class="col-sm-2 rank-container"> 
-    <div class="col-sm-1 upvote" ng-click="upvote(data)"> + </div>
+    <div class="col-sm-1 upvote" ng-click="upvote(data.id); data.votes.push(1)"> + </div>
     <div class="col-sm-1 rank">{{data.votes.length}}</div>
   </div>
   <header class="col-sm-10">
     <h2 ng-click="go(data.id)"> {{data.title}} </h2>
     <span class="actions"> <a ng-click="favorite(data.id)" href=""><i class="fa fa-star-o fa-lg"></i></a> <a ng-click="clone(data)" href=""><i class="fa fa-copy fa-lg"></i></a></span>
     <span class="description">{{data.description}}</span>
-    <ul class="list-inline tags">
-      <!-- <li><span class="badge">javascript</span></li> -->
-      <!-- <li><span class="badge">angularjs</span></li> -->
-      <!-- <li><span class="badge">directives</span></li> -->
-      <!-- <li><span class="badge">tutorial</span></li> -->
-    </ul>
   </header>
   <div class="expand" ng-click="expand($event)"> <h4>click to expand</h4></div>
   <section class="links">
