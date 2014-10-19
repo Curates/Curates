@@ -5,14 +5,26 @@ var Vote = require('./vote.model');
 
 // Creates a new vote
 exports.create = function(req, res) {
+  
   new Vote(req.body)
-    .save()
+    .fetch()
     .then(function(vote) {
-      return res.json(201, vote);
+      if (!vote) {
+        var newVote = new Vote(req.body);
+        newVote.save()
+            .then(function(vote) {
+          return res.json(201, vote);
+        })
+        .catch(function(err) {
+          return handleError(res, err);
+        });
+      }
+      return res.send(400);
     })
-    .catch(function(err) {
+    .error(function(err) {
       return handleError(res, err);
-    });
+    })
+
 };
 
 // Remote a vote from the DB.
