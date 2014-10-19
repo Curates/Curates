@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('curatesApp')
-  .controller('CreateCtrl', function ($scope, Collections, Auth) {
+  .controller('CreateCtrl', function ($scope, Collections, Auth, $state) {
     $scope.message = 'Hello';
 
     var collection = $scope.collection = {
@@ -9,7 +9,9 @@ angular.module('curatesApp')
     };
 
     $scope.create = function () {
-      Collections.addCollection(collection);
-      console.log(collection);
+      Collections.addCollection(collection)
+        .then(function(collection) {
+          $state.go('edit', {id: collection.data.id});
+        });
     };
   });
